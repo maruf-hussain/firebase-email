@@ -7,13 +7,15 @@ import app from '../../Firebase/firebase-config';
 const auth = getAuth(app);
 
 const Register = () => {
-    const [email , setEmail] = useState('');
-// const [password , setPassword] = useState('');
+ const [error , setError] = useState('');
+ const [succes, setSucces] = useState('');  
+
 
 
 
 const handleSubmit = (event) => {
   event.preventDefault();
+  setSucces('');
   const email = event.target.email.value;
   const password = event.target.password.value;
   console.log(email,password);
@@ -21,30 +23,30 @@ const handleSubmit = (event) => {
   createUserWithEmailAndPassword(auth,email,password)
   .then(result => {
    const loggedUser = result.user;
-   console.log(loggedUser)
+   console.log(loggedUser);
+   setSucces('User has create succesfully');
+   setError('');
+   event.target.reset();
   })
   .catch(error => {
     console.log('errror', error.message)
+    setError('Please write keyword')
+    
   })
 
 }
 
-const handleEmailChange = (event) =>{
 
-}
-
-const handlePasswordBlur = (event) =>{
- 
- 
-}
 
     return (
         <div>
             <form className='mx-auto w-50' onSubmit ={handleSubmit}>
-                <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder='Type Your Email' /><br/>
-                <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Type Your Password' />
+                <input type="email" name="email" id="email" placeholder='Type Your Email' required /><br/>
+                <input  type="password" name="password" id="password" placeholder='Type Your Password' required />
                <br />
+               <p className='text-danger'>{error}</p>
                <input style={{backgroundColor:'greenyellow'}} type="submit" value="Register" />
+               <p className='text-success'>{succes}</p>
             </form>
            
         </div>
